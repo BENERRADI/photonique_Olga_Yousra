@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="94">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>correction.h</itemPath>
+      <itemPath>exposure.h</itemPath>
+      <itemPath>matching2.h</itemPath>
+      <itemPath>stitching.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>correction.cpp</itemPath>
+      <itemPath>exposure.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+      <itemPath>matching2.cpp</itemPath>
+      <itemPath>stitching.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>include</pElem>
+            <pElem>.</pElem>
+          </incDir>
+          <commandLine>-fopenmp -march=native</commandLine>
+          <warningLevel>2</warningLevel>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>include</pElem>
+            <pElem>.</pElem>
+          </incDir>
+          <commandLine>-fopenmp -march=native</commandLine>
+          <warningLevel>2</warningLevel>
+        </ccTool>
+        <linkerTool>
+          <linkerAddLib>
+            <pElem>lib</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerLibStdlibItem>Mathematics</linkerLibStdlibItem>
+            <linkerLibLibItem>opencv_calib3d249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_contrib249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_core249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_features2d249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_flann249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_gpu249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_highgui249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_imgproc249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_legacy249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_ml249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_nonfree249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_objdetect249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_ocl249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_photo249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_stitching249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_superres249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_ts249</linkerLibLibItem>
+            <linkerLibLibItem>opencv_video249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_videostab249.dll</linkerLibLibItem>
+          </linkerLibItems>
+          <commandLine>-fopenmp -march=native</commandLine>
+        </linkerTool>
+      </compileType>
+      <packaging>
+        <packType>Zip</packType>
+        <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}.exe"
+                            from="${OUTPUT_PATH}.exe"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+        </packFileList>
+      </packaging>
+      <item path="correction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="correction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="exposure.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="exposure.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="stitching.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="stitching.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+          <stripSymbols>true</stripSymbols>
+          <incDir>
+            <pElem>include</pElem>
+            <pElem>.</pElem>
+          </incDir>
+          <commandLine>-fopenmp -march=native</commandLine>
+          <warningLevel>2</warningLevel>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <stripSymbols>true</stripSymbols>
+          <incDir>
+            <pElem>include</pElem>
+            <pElem>.</pElem>
+          </incDir>
+          <commandLine>-fopenmp -march=native -O2</commandLine>
+          <warningLevel>2</warningLevel>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>6</developmentMode>
+        </asmTool>
+        <linkerTool>
+          <linkerAddLib>
+            <pElem>lib</pElem>
+          </linkerAddLib>
+          <stripSymbols>true</stripSymbols>
+          <linkerLibItems>
+            <linkerLibStdlibItem>Mathematics</linkerLibStdlibItem>
+            <linkerLibLibItem>opencv_calib3d249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_contrib249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_core249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_features2d249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_flann249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_gpu249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_highgui249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_imgproc249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_legacy249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_ml249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_nonfree249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_objdetect249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_ocl249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_photo249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_stitching249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_superres249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_ts249</linkerLibLibItem>
+            <linkerLibLibItem>opencv_video249.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_videostab249.dll</linkerLibLibItem>
+          </linkerLibItems>
+          <commandLine>-fopenmp -march=native -O2</commandLine>
+        </linkerTool>
+      </compileType>
+      <packaging>
+        <packType>Zip</packType>
+        <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/photonique.zip</output>
+        <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}.exe"
+                            from="${OUTPUT_PATH}.exe"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+        </packFileList>
+      </packaging>
+      <item path="correction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="correction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="exposure.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="exposure.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="stitching.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="stitching.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
