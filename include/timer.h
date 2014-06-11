@@ -5,12 +5,11 @@
 extern "C" {
 #endif
 
-#include <time.h>
+#include <opencv2/core/core.hpp>
 #include <stdio.h>
 
 #ifndef timer__             
-    //#define timer__(data)   for (long blockTime = NULL; (blockTime == NULL ? (blockTime = clock()) != NULL : false); printf(data " : %.3fs\n", (double) (clock() - blockTime) / CLOCKS_PER_SEC))
-#define timer__(data)   for (clock_t blockTime = -1; (blockTime == -1 ? (blockTime = clock()) != -1 : false); printf(data " : %.3fs\n", (double) (clock() - blockTime) / CLOCKS_PER_SEC), fflush(stdout))
+#define timer__(data)   for (int64 blockTime = -1; (blockTime == -1 ? (blockTime = getTickCount()) != -1 : false); printf(data " : %.3fms\n", /*(double)*/ 100*((getTickCount() - blockTime) / getTickFrequency())), fflush(stdout))
 #endif
 
 
