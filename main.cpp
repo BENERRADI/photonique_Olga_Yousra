@@ -7,6 +7,7 @@
 #include <iomanip>
 //
 #include <opencv2/opencv.hpp>
+#include "matcher.h"
 #include "correction.h"
 #include "stitching.h"
 #include <timer.h>
@@ -78,6 +79,8 @@ int main(int argc, char** argv) {
     Mat mask(img.size(), CV_8U, 255);
     Point last_corner = img_center_fusion;
 
+    matcher m(img);
+
     while (true) {
 
         if (cap.read(img)) {
@@ -90,16 +93,24 @@ int main(int argc, char** argv) {
 
 
             //fusion_reborn(img_fusion, imgs[i]); // mat img_fusion : déclare l'image fusionnée ==> fusion de toutes les images
-            fusion_maison(img_fusion, img, mask, last_corner);
+            //fusion_maison(img_fusion, img, mask, last_corner);
 
             Mat img_fusion_mini;
 
             //timer__("Resize") {
             resize(img_fusion, img_fusion_mini, Size(), 0.5, 0.5, CV_INTER_LINEAR);
             //}
+            Matx33f transfo;
 
+            timer__("Matching") {
+                transfo = m.match(img);
+            }
+            cout << transfo << endl;
+            Mat imgW;
+            warpPerspective(img, imgW, transfo, img.size(), INTER_LINEAR);
             imshow("Panorama", img_fusion_mini);
-            imshow("Camera", img);
+            imshow("Camera", imgW);
+            waitKey();
         }
         if (waitKey(30) >= 0) break;
     }

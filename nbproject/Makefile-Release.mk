@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/correction.o \
 	${OBJECTDIR}/exposure.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/matcher.o \
 	${OBJECTDIR}/stitching.o
 
 
@@ -79,6 +80,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -s -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/matcher.o: matcher.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -s -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/matcher.o matcher.cpp
 
 ${OBJECTDIR}/stitching.o: stitching.cpp 
 	${MKDIR} -p ${OBJECTDIR}

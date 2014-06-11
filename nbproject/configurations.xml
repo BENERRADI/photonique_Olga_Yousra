@@ -6,7 +6,7 @@
                    projectFiles="true">
       <itemPath>correction.h</itemPath>
       <itemPath>exposure.h</itemPath>
-      <itemPath>matching2.h</itemPath>
+      <itemPath>matcher.h</itemPath>
       <itemPath>stitching.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -19,7 +19,7 @@
       <itemPath>correction.cpp</itemPath>
       <itemPath>exposure.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
-      <itemPath>matching2.cpp</itemPath>
+      <itemPath>matcher.cpp</itemPath>
       <itemPath>stitching.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -108,6 +108,10 @@
       <item path="exposure.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="matcher.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="matcher.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="stitching.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -198,6 +202,10 @@
       <item path="exposure.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="matcher.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="matcher.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="stitching.cpp" ex="false" tool="1" flavor2="0">
       </item>
