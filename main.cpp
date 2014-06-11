@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
     Mat mask(img.size(), CV_8U, 255);
     Point last_corner = img_center_fusion;
 
-    matcher m(img);
+    matcher m(img_center_fusion, img_fusion);
 
     while (true) {
 
@@ -91,26 +91,18 @@ int main(int argc, char** argv) {
                 //swirl(img, img, swirl_data);
             }
 
+            timer__("Matching")
+            m.match(img);
 
-            //fusion_reborn(img_fusion, imgs[i]); // mat img_fusion : déclare l'image fusionnée ==> fusion de toutes les images
-            //fusion_maison(img_fusion, img, mask, last_corner);
+            timer__("Fusion")
+            m.fusion(img_fusion);
 
             Mat img_fusion_mini;
-
-            //timer__("Resize") {
             resize(img_fusion, img_fusion_mini, Size(), 0.5, 0.5, CV_INTER_LINEAR);
-            //}
-            Matx33f transfo;
 
-            timer__("Matching") {
-                transfo = m.match(img);
-            }
-            cout << transfo << endl;
-            Mat imgW;
-            warpPerspective(img, imgW, transfo, img.size(), INTER_LINEAR);
             imshow("Panorama", img_fusion_mini);
-            imshow("Camera", imgW);
-            waitKey();
+            imshow("Camera", img);
+            //waitKey();
         }
         if (waitKey(30) >= 0) break;
     }

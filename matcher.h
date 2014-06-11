@@ -5,28 +5,21 @@
 #include <opencv2/nonfree/nonfree.hpp>
 #include <vector>
 
-//#define DEBUG_MATCH
-
 class matcher {
 public:
-    matcher(cv::Mat initialImg);
+    matcher(cv::Point initialPosition, cv::Mat img_fusion);
     matcher(const matcher& orig);
     virtual ~matcher();
 
-    cv::Matx33f match(cv::Mat img);
+    void match(cv::Mat img);
+    void fusion(cv::Mat& img_fusion);
 
-    std::vector<cv::DMatch> matches, goodMatches;
+    cv::Mat transformation;
 private:
     //static const int threshold = 10;
 
-    cv::Mat last_img;
-    std::vector<cv::KeyPoint> last_keypoints, keypoints;
-
-    cv::Mat last_descriptor, descriptor;
-
-    cv::GoodFeaturesToTrackDetector detector;
-    cv::OrbDescriptorExtractor extractor;
-    cv::BFMatcher descMatcher;
+    cv::Mat img, last_img_fusion;
+    cv::Point position, last_position;
 };
 
 #endif	/* MATCHER_H */

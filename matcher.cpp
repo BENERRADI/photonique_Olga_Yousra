@@ -11,14 +11,9 @@
 using namespace std;
 using namespace cv;
 
-matcher::matcher(Mat initialImg) {
-    Mat eqImg;
-    equalizeHist(initialImg, eqImg);
-    detector = GoodFeaturesToTrackDetector(1000, 0.3, 1.2, 7, false, 0.04);
-    last_img = initialImg;
-    detector.detect(last_img, last_keypoints);
-    extractor.compute(last_img, last_keypoints, last_descriptor);
-    descMatcher = BFMatcher(NORM_HAMMING);
+matcher::matcher(Point initialPosition, Mat img_fusion) {
+    last_img_fusion = img_fusion;
+    position = initialPosition;
 }
 
 matcher::matcher(const matcher& orig) {
@@ -27,48 +22,67 @@ matcher::matcher(const matcher& orig) {
 matcher::~matcher() {
 }
 
-Matx33f matcher::match(Mat img) {
-    detector.detect(img, keypoints);
-    extractor.compute(img, keypoints, descriptor);
-    descMatcher.match(last_descriptor, descriptor, matches);
+void matcher::match(Mat img) {
+    this->img = img;
+    last_position = position;
 
-    float min_dist = min_element(matches.begin(), matches.end())->distance;
-
-    goodMatches.clear();
-
-    cout << min_dist << endl;
-    for (int i = 0; i < last_descriptor.rows; i++) {
-        if (matches[i].distance <= max(2 * min_dist, 10.0f))
-            goodMatches.push_back(matches[i]);
-    }
-
-#ifdef DEBUG_MATCH
-    Mat img_matches;
-    drawMatches(last_img, last_keypoints, img, keypoints, goodMatches, img_matches,
-            Scalar::all(-1), Scalar::all(-1), vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
-    namedWindow("Matches", CV_WINDOW_AUTOSIZE);
-    imshow("Matches", img_matches);
-    waitKey();
-#endif
-
-    vector<Point2f> src(goodMatches.size()), dst(goodMatches.size());
-    for (int i = 0; i < goodMatches.size(); i++) {
-        dst[i] = last_keypoints[goodMatches[i].queryIdx].pt;
-        src[i] = keypoints[goodMatches[i].trainIdx].pt;
-    }
-
-    Matx33f transfo;
-    if (src.size() >= 4) {
-        transfo = findHomography(src, dst, CV_LMEDS);
-    } else {
-        transfo = Matx33f(
+    Mat transfo = estimateRigidTransform(img, last_img_fusion(Rect(position, img.size())), false);
+    if (transfo.rows != 2 && transfo.cols != 3) {
+        transfo = Mat(Matx23f(
                 1, 0, 0,
-                0, 1, 0,
-                0, 0, 1);
+                0, 1, 0));
     }
 
-    last_img = img;
-    swap(last_keypoints, keypoints);
-    last_descriptor = descriptor;
-    return transfo;
+    position.x = last_position.x + transfo.at<double>(0, 2);
+    position.y = last_position.y + transfo.at<double>(1, 2);
+
+    transfo.at<double>(0, 2) = 0;
+    transfo.at<double>(1, 2) = 0;
+
+    transformation = transfo;
+}
+
+void matcher::fusion(Mat& img_fusion) {
+    Mat imgW;
+    warpAffine(img, imgW, transformation, img.size());
+
+    Point tl;
+    Point br;
+    tl.x = min<int>(position.x, 0);
+    tl.y = min<int>(position.y, 0);
+    br.x = max<int>(position.x + img.cols, img_fusion.cols);
+    br.y = max<int>(position.y + img.rows, img_fusion.rows);
+    Rect taille(tl, br);
+
+    if (taille.size() == img_fusion.size()) {
+
+    } else {
+        Mat img_fusion_next = Mat::zeros(taille.size(), CV_8U);
+        img_fusion.copyTo(img_fusion_next(Rect(-taille.x, -taille.y, img_fusion.cols, img_fusion.rows)));
+        position -= taille.tl();
+        img_fusion = img_fusion_next;
+    }
+
+    Rect selection = Rect(position, img.size());
+    Mat dst = img_fusion(selection);
+    Mat gradient = imread("gradient.png", CV_LOAD_IMAGE_GRAYSCALE);
+    resize(gradient, gradient, img.size());
+    warpAffine(gradient, gradient, transformation, img.size());
+
+    gradient.convertTo(gradient, CV_32F, 1.0 / 255.0);
+#pragma omp parallel for collapse(2) firstprivate(gradient) schedule(dynamic, 50)
+    for (int y = 0; y < imgW.rows; y++) {
+        for (int x = 0; x < imgW.cols; x++) {
+            uchar* fusion_pxl = dst.ptr<uchar>(y, x);
+            if (imgW.at<uchar>(y, x) > 1) {
+                if (*fusion_pxl > 0) {
+                    *fusion_pxl = (1.0 - gradient.at<float>(y, x)) * (*fusion_pxl) +
+                            gradient.at<float>(y, x) * imgW.at<uchar>(y, x);
+                } else {
+                    *fusion_pxl = imgW.at<uchar>(y, x);
+                }
+            }
+        }
+    }
+    last_img_fusion = img_fusion;
 }
