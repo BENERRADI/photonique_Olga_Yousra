@@ -39,7 +39,7 @@ vector<Point> calcCorners_match(vector<Mat> imgs, int template_size, vector<Mat>
         double minVal, maxVal;
         Point minLoc, maxLoc;
         template_img = imgs[i - 1](selection); //sous matrice de l'image précédente
-        matchTemplate(imgs[i], template_img, result, CV_TM_SQDIFF_NORMED); //fonction d'open cv
+        matchTemplate(imgs[i], template_img, result, TM_SQDIFF_NORMED); //fonction d'open cv
         minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc);
         if (minVal < 0.7) {
             Point corn; //définit le coin calculé, c'est le coin de l'image actuelle
@@ -132,7 +132,7 @@ bool calcCorners_match_r(Mat& img_fusion, Mat& img, int template_size, float coe
     Mat result; //définition des variables
     double minVal, maxVal;
     Point minLoc, maxLoc;
-    matchTemplate(eqImg_fus, eqImg(selection), result, CV_TM_SQDIFF_NORMED); //fonction d'open cv
+    matchTemplate(eqImg_fus, eqImg(selection), result, TM_SQDIFF_NORMED); //fonction d'open cv
     minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc);
     if (minVal < coeff) {
         corner.x = tl.x + (minLoc.x - selection.x); //calcul le coin en fonction d el'image matchée précédemment
@@ -175,7 +175,7 @@ bool calcCorners_match_r(Mat& img_fusion, Mat& img, int template_size, float coe
 }*/
 
 void Img_mean(Mat& img_fusion, Mat& img, Mat& mask, Mat& dst) {
-    Mat gradient = imread("gradient.png", CV_LOAD_IMAGE_GRAYSCALE);
+    Mat gradient = imread("gradient.png", IMREAD_GRAYSCALE);
     gradient.convertTo(gradient, CV_32F, 1.0 / 255.0);
     dst = img_fusion;
 #pragma omp parallel for collapse(2) schedule(dynamic, 50)

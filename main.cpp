@@ -30,7 +30,7 @@ vector<Mat> openImages(string path, int n) { //string path : chemin de l'image, 
         filename << path << setw(3) << setfill('0') << i << ".jpg"; //setw : taille de x chiffres, setfill : complète i par des 0 jusqu'à atteindre le nb setw
 #pragma omp critical
         cout << "Loading " << filename.str() << endl;
-        img = imread(filename.str(), CV_LOAD_IMAGE_COLOR);
+        img = imread(filename.str(), IMREAD_GRAYSCALE);
         if (!img.data) { // Check for invalid input ==> si rien n'a été chargé
 #pragma omp critical
             cerr << "Impossible d'ouvrir " << filename.str() << endl;
@@ -55,17 +55,17 @@ int main(int argc, char** argv) {
 
     VideoCapture cap(path + "%03d.jpg");
     //VideoCapture cap(0);
-    cap.set(CV_CAP_PROP_FPS, 8);
+    cap.set(CAP_PROP_FPS, 8);
 
-    namedWindow("Camera", CV_WINDOW_AUTOSIZE);
-    namedWindow("Panorama", CV_WINDOW_AUTOSIZE);
+    namedWindow("Camera", WINDOW_AUTOSIZE);
+    namedWindow("Panorama", WINDOW_AUTOSIZE);
 
     Mat img;
 
     //Traitement de la première image
     while (!cap.read(img));
 
-    cvtColor(img, img, CV_BGR2GRAY);
+    cvtColor(img, img, COLOR_BGR2GRAY);
 
     Interpolation(img, img);
     Mat img_fusion = Mat::zeros(768 * 2, 1024 * 2, CV_8U);
@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
     while (true) {
 
         if (cap.read(img)) {
-            cvtColor(img, img, CV_BGR2GRAY);
+            cvtColor(img, img, COLOR_BGR2GRAY);
 
             timer__("Correction") {
                 Interpolation(img, img);
@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
             m.fusion(img_fusion);
 
             Mat img_fusion_mini;
-            resize(img_fusion, img_fusion_mini, Size(), 0.5, 0.5, CV_INTER_LINEAR);
+            resize(img_fusion, img_fusion_mini, Size(), 0.5, 0.5, INTER_LINEAR);
 
             imshow("Panorama", img_fusion_mini);
             imshow("Camera", img);

@@ -56,7 +56,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-Llib -lm -lopencv_calib3d249.dll -lopencv_contrib249.dll -lopencv_core249.dll -lopencv_features2d249.dll -lopencv_flann249.dll -lopencv_gpu249.dll -lopencv_highgui249.dll -lopencv_imgproc249.dll -lopencv_legacy249.dll -lopencv_ml249.dll -lopencv_nonfree249.dll -lopencv_objdetect249.dll -lopencv_ocl249.dll -lopencv_photo249.dll -lopencv_stitching249.dll -lopencv_superres249.dll -lopencv_ts249 -lopencv_video249.dll -lopencv_videostab249.dll
+LDLIBSOPTIONS=-Llib -lm -lopencv_calib3d300.dll -lopencv_contrib300.dll -lopencv_core300.dll -lopencv_features2d300.dll -lopencv_flann300.dll -lopencv_highgui300.dll -lopencv_imgproc300.dll -lopencv_legacy300.dll -lopencv_ml300.dll -lopencv_nonfree300.dll -lopencv_objdetect300.dll -lopencv_optim300.dll -lopencv_photo300.dll -lopencv_shape300.dll -lopencv_softcascade300.dll -lopencv_stitching300.dll -lopencv_superres300.dll -lopencv_ts300 -lopencv_video300.dll -lopencv_videostab300.dll
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}

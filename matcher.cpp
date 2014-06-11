@@ -65,7 +65,7 @@ void matcher::fusion(Mat& img_fusion) {
 
     Rect selection = Rect(position, img.size());
     Mat dst = img_fusion(selection);
-    Mat gradient = imread("gradient.png", CV_LOAD_IMAGE_GRAYSCALE);
+    Mat gradient = imread("gradient.png", IMREAD_GRAYSCALE);
     resize(gradient, gradient, img.size());
     warpAffine(gradient, gradient, transformation, img.size());
 
