@@ -22,15 +22,13 @@ matcher::matcher(const matcher& orig) {
 matcher::~matcher() {
 }
 
-void matcher::match(Mat img) {
+bool matcher::match(Mat img) {
     this->img = img;
     last_position = position;
 
     Mat transfo = estimateRigidTransform(img, last_img_fusion(Rect(position, img.size())), false);
     if (transfo.rows != 2 && transfo.cols != 3) {
-        transfo = Mat(Matx23f(
-                1, 0, 0,
-                0, 1, 0));
+        return false;
     }
 
     position.x = last_position.x + transfo.at<double>(0, 2);
@@ -40,6 +38,7 @@ void matcher::match(Mat img) {
     transfo.at<double>(1, 2) = 0;
 
     transformation = transfo;
+    return true;
 }
 
 void matcher::fusion(Mat& img_fusion) {

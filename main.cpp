@@ -91,11 +91,13 @@ int main(int argc, char** argv) {
                 //swirl(img, img, swirl_data);
             }
 
+            bool matched;
             timer__("Matching")
-            m.match(img);
+            matched = m.match(img);
 
-            timer__("Fusion")
-            m.fusion(img_fusion);
+            if (matched)
+                timer__("Fusion")
+                m.fusion(img_fusion);
 
             Mat img_fusion_mini;
             resize(img_fusion, img_fusion_mini, Size(), 0.5, 0.5, INTER_LINEAR);

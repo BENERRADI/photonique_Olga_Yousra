@@ -11,7 +11,7 @@ public:
     matcher(const matcher& orig);
     virtual ~matcher();
 
-    void match(cv::Mat img);
+    bool match(cv::Mat img);
     void fusion(cv::Mat& img_fusion);
 
     cv::Mat transformation;
