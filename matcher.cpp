@@ -1,8 +1,4 @@
 #include "matcher.h"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/calib3d/calib3d.hpp"
-#include "opencv2/video/tracking.hpp"
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -11,39 +7,65 @@
 using namespace std;
 using namespace cv;
 
-matcher::matcher(Point initialPosition, Mat img_fusion) {
-    last_img_fusion = img_fusion;
-    position = initialPosition;
-}
+matcher::matcher(Rect initialPosition, InputArray img_fusion, Matching_Mode mode) {
+    last_img_fusion = img_fusion.getMat();
+    last_position = initialPosition.tl();
+    last_img = last_img_fusion(initialPosition);
 
-matcher::matcher(const matcher& orig) {
+    //Premier canal : somme
+    //Deuxième canal : nombre de valeurs
+    redondance.create(last_img_fusion.size(), CV_32FC2);
+    update_redondance(last_img, initialPosition.tl());
+
+    this->mode = mode;
+
+    gradient = imread("gradient.png", IMREAD_GRAYSCALE);
+    resize(gradient, gradient, initialPosition.size());
+    gradient.convertTo(gradient, CV_32F, 1.0 / 255.0);
 }
 
 matcher::~matcher() {
 }
 
-bool matcher::match(Mat img) {
-    this->img = img;
-    last_position = position;
-
-    Mat transfo = estimateRigidTransform(img, last_img_fusion(Rect(position, img.size())), false);
-    if (transfo.rows != 2 && transfo.cols != 3) {
-        return false;
+void matcher::update_redondance(InputArray _img, Point position, InputArray _gradient) {
+    Mat gradient = _gradient.getMat(), img = _img.getMat();
+#pragma omp parallel for collapse(2) schedule(dynamic, 50)
+    for (int y = 0; y < img.rows; y++) {
+        for (int x = 0; x < img.cols; x++) {
+            if (img.at<uchar>(y, x) > 0) {
+                if (gradient.data && redondance.at<Vec2f>(y + position.y, x + position.x)[1] > 0) {
+                    redondance.at<Vec2f>(y + position.y, x + position.x)[0] += (1.0 - gradient.at<float>(y, x)) * img.at<uchar>(y, x);
+                } else {
+                    redondance.at<Vec2f>(y + position.y, x + position.x)[0] += img.at<uchar>(y, x);
+                }
+                redondance.at<Vec2f>(y + position.y, x + position.x)[1] += 1;
+            }
+        }
     }
-
-    position.x = last_position.x + transfo.at<double>(0, 2);
-    position.y = last_position.y + transfo.at<double>(1, 2);
-
-    transfo.at<double>(0, 2) = 0;
-    transfo.at<double>(1, 2) = 0;
-
-    transformation = transfo;
-    return true;
+#ifdef SHOW_REDONDANCE
+    namedWindow("Redondance Somme", WINDOW_AUTOSIZE);
+    namedWindow("Redondance Nombre", WINDOW_AUTOSIZE);
+    Mat somme, nombre;
+    vector<Mat> channels(2);
+    split(redondance, channels);
+    normalize(channels[0], somme, 0, 255, NORM_MINMAX, CV_8U);
+    normalize(channels[1], nombre, 0, 255, NORM_MINMAX, CV_8U);
+    imshow("Redondance Somme", somme);
+    imshow("Redondance Nombre", nombre);
+    imwrite("red_somme.png", somme);
+    imwrite("red_nombre.png", nombre);
+    //waitKey();
+#endif
 }
 
-void matcher::fusion(Mat& img_fusion) {
-    Mat imgW;
-    warpAffine(img, imgW, transformation, img.size());
+void matcher::next_img() {
+    last_position = position;
+    last_img = img;
+}
+
+void matcher::doBlend(InputOutputArray _img_fusion, InputArray _gradient, InputArray _img) {
+    Mat img = _img.getMat();
+    Mat img_fusion = _img_fusion.getMat();
 
     Point tl;
     Point br;
@@ -53,35 +75,30 @@ void matcher::fusion(Mat& img_fusion) {
     br.y = max<int>(position.y + img.rows, img_fusion.rows);
     Rect taille(tl, br);
 
-    if (taille.size() == img_fusion.size()) {
-
-    } else {
+    if (taille.size() != img_fusion.size()) {
         Mat img_fusion_next = Mat::zeros(taille.size(), CV_8U);
+        Mat redondance_next = Mat(taille.size(), CV_32FC2);
         img_fusion.copyTo(img_fusion_next(Rect(-taille.x, -taille.y, img_fusion.cols, img_fusion.rows)));
+        redondance.copyTo(redondance_next(Rect(-taille.x, -taille.y, redondance.cols, redondance.rows)));
         position -= taille.tl();
         img_fusion = img_fusion_next;
+        redondance = redondance_next;
     }
 
     Rect selection = Rect(position, img.size());
     Mat dst = img_fusion(selection);
-    Mat gradient = imread("gradient.png", IMREAD_GRAYSCALE);
-    resize(gradient, gradient, img.size());
-    warpAffine(gradient, gradient, transformation, img.size());
 
-    gradient.convertTo(gradient, CV_32F, 1.0 / 255.0);
-#pragma omp parallel for collapse(2) firstprivate(gradient) schedule(dynamic, 50)
-    for (int y = 0; y < imgW.rows; y++) {
-        for (int x = 0; x < imgW.cols; x++) {
-            uchar* fusion_pxl = dst.ptr<uchar>(y, x);
-            if (imgW.at<uchar>(y, x) > 1) {
-                if (*fusion_pxl > 0) {
-                    *fusion_pxl = (1.0 - gradient.at<float>(y, x)) * (*fusion_pxl) +
-                            gradient.at<float>(y, x) * imgW.at<uchar>(y, x);
-                } else {
-                    *fusion_pxl = imgW.at<uchar>(y, x);
-                }
-            }
+    update_redondance(img, selection.tl(), _gradient);
+
+
+#pragma omp parallel for collapse(2) schedule(dynamic, 50)
+    for (int y = 0; y < dst.rows; y++) {
+        for (int x = 0; x < dst.cols; x++) {
+            Vec2f red_pix = redondance.at<Vec2f>(position.y + y, position.x + x);
+            if (red_pix[1] > 0)
+                dst.at<uchar>(y, x) = red_pix[0] / red_pix[1];
         }
     }
+
     last_img_fusion = img_fusion;
 }

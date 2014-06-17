@@ -1,45 +1,15 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-//Pour openImages
-#include <vector>
-#include <string>
-#include <iomanip>
-//
+
 #include <opencv2/opencv.hpp>
-#include "matcher.h"
+#include "Matching/TemplateMatching.h"
+#include "Matching/EstimateRigidT.h"
 #include "correction.h"
-#include "stitching.h"
 #include <timer.h>
 
 using namespace std;
 using namespace cv;
-
-vector<Mat> openImages(string path, int n) { //string path : chemin de l'image, n : nb d'images
-    int i;
-    vector<Mat> imgs; //liste d'images dans la variable imgs
-    imgs.resize(n); //pré allouer la bonne taille dès le début
-    stringstream filename; //permet la concaténation
-    Mat img; //une image
-#pragma omp parallel for private(img, filename) firstprivate(n, path) // parallélisation
-    for (i = 1; i < n + 1; i++) { // charge toutes les images une par une
-        //Reset filename
-        filename.clear(); //réinitialise
-        filename.str("");
-
-        filename << path << setw(3) << setfill('0') << i << ".jpg"; //setw : taille de x chiffres, setfill : complète i par des 0 jusqu'à atteindre le nb setw
-#pragma omp critical
-        cout << "Loading " << filename.str() << endl;
-        img = imread(filename.str(), IMREAD_GRAYSCALE);
-        if (!img.data) { // Check for invalid input ==> si rien n'a été chargé
-#pragma omp critical
-            cerr << "Impossible d'ouvrir " << filename.str() << endl;
-        } else {
-            imgs[i - 1] = img; // si l'image est conforme / lu, elle est stockée dans un tableau
-        }
-    }
-    return imgs;
-}
 
 int main(int argc, char** argv) {
     string path; //chemin des images
@@ -69,17 +39,14 @@ int main(int argc, char** argv) {
 
     Interpolation(img, img);
     Mat img_fusion = Mat::zeros(768 * 2, 1024 * 2, CV_8U);
-    Point img_center_fusion;
+    Rect img_center_fusion;
     img_center_fusion.x = img_fusion.cols / 2 - img.cols / 2;
     img_center_fusion.y = img_fusion.rows / 2 - img.rows / 2;
-    img.copyTo(img_fusion(Rect(img_center_fusion, Size(img.cols, img.rows))));
+    img_center_fusion.width = img.cols;
+    img_center_fusion.height = img.rows;
+    img.copyTo(img_fusion(img_center_fusion));
 
-    //Mat mask = Mat::zeros(img.size(), CV_8U);
-    //circle(mask, Point(mask.cols / 2, mask.rows / 2), mask.rows / 2, 255, CV_FILLED);
-    Mat mask(img.size(), CV_8U, 255);
-    Point last_corner = img_center_fusion;
-
-    matcher m(img_center_fusion, img_fusion);
+    TemplateMatching m(img_center_fusion, img_fusion, PANORAMA);
 
     while (true) {
 
@@ -97,7 +64,7 @@ int main(int argc, char** argv) {
 
             if (matched)
                 timer__("Fusion")
-                m.fusion(img_fusion);
+                m.blend(img_fusion);
 
             Mat img_fusion_mini;
             resize(img_fusion, img_fusion_mini, Size(), 0.5, 0.5, INTER_LINEAR);

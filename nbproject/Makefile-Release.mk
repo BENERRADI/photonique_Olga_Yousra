@@ -35,11 +35,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Matching/EstimateRigidT.o \
+	${OBJECTDIR}/Matching/TemplateMatching.o \
 	${OBJECTDIR}/correction.o \
 	${OBJECTDIR}/exposure.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/matcher.o \
-	${OBJECTDIR}/stitching.o
+	${OBJECTDIR}/matcher.o
 
 
 # C Compiler Flags
@@ -66,6 +67,16 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/photonique2.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/photonique2 ${OBJECTFILES} ${LDLIBSOPTIONS} -fopenmp -march=native -O2 -s
 
+${OBJECTDIR}/Matching/EstimateRigidT.o: Matching/EstimateRigidT.cpp 
+	${MKDIR} -p ${OBJECTDIR}/Matching
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -s -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Matching/EstimateRigidT.o Matching/EstimateRigidT.cpp
+
+${OBJECTDIR}/Matching/TemplateMatching.o: Matching/TemplateMatching.cpp 
+	${MKDIR} -p ${OBJECTDIR}/Matching
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -s -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Matching/TemplateMatching.o Matching/TemplateMatching.cpp
+
 ${OBJECTDIR}/correction.o: correction.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -85,11 +96,6 @@ ${OBJECTDIR}/matcher.o: matcher.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -s -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/matcher.o matcher.cpp
-
-${OBJECTDIR}/stitching.o: stitching.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -s -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/stitching.o stitching.cpp
 
 # Subprojects
 .build-subprojects:
