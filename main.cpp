@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
     img_center_fusion.height = img.rows;
     img.copyTo(img_fusion(img_center_fusion));
 
-    TemplateMatching m(img_center_fusion, img_fusion, PANORAMA);
+    TemplateMatching m(img_center_fusion, img_fusion, SEQUENCE);
 
     while (true) {
 

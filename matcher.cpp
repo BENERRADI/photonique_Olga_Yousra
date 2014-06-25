@@ -77,12 +77,14 @@ void matcher::doBlend(InputOutputArray _img_fusion, InputArray _gradient, InputA
 
     if (taille.size() != img_fusion.size()) {
         Mat img_fusion_next = Mat::zeros(taille.size(), CV_8U);
-        Mat redondance_next = Mat(taille.size(), CV_32FC2);
+        Mat redondance_next = Mat::zeros(taille.size(), CV_32FC2);
         img_fusion.copyTo(img_fusion_next(Rect(-taille.x, -taille.y, img_fusion.cols, img_fusion.rows)));
         redondance.copyTo(redondance_next(Rect(-taille.x, -taille.y, redondance.cols, redondance.rows)));
         position -= taille.tl();
+        last_position -= taille.tl();
         img_fusion = img_fusion_next;
         redondance = redondance_next;
+        _img_fusion.assign(img_fusion_next);
     }
 
     Rect selection = Rect(position, img.size());
