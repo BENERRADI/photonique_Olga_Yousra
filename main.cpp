@@ -3,9 +3,9 @@
 #include <string>
 
 #include <opencv2/opencv.hpp>
+#include "correction.h"
 #include "Matching/TemplateMatching.h"
 #include "Matching/EstimateRigidT.h"
-#include "correction.h"
 #include <timer.h>
 
 using namespace std;

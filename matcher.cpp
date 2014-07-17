@@ -69,10 +69,10 @@ void matcher::doBlend(InputOutputArray _img_fusion, InputArray _gradient, InputA
 
     Point tl;
     Point br;
-    tl.x = min<int>(position.x, 0);
-    tl.y = min<int>(position.y, 0);
-    br.x = max<int>(position.x + img.cols, img_fusion.cols);
-    br.y = max<int>(position.y + img.rows, img_fusion.rows);
+    tl.x = min<int>(cvRound(position.x), 0);
+    tl.y = min<int>(cvRound(position.y), 0);
+    br.x = max<int>(cvRound(position.x) + img.cols, img_fusion.cols);
+    br.y = max<int>(cvRound(position.y) + img.rows, img_fusion.rows);
     Rect taille(tl, br);
 
     if (taille.size() != img_fusion.size()) {
@@ -80,8 +80,10 @@ void matcher::doBlend(InputOutputArray _img_fusion, InputArray _gradient, InputA
         Mat redondance_next = Mat::zeros(taille.size(), CV_32FC2);
         img_fusion.copyTo(img_fusion_next(Rect(-taille.x, -taille.y, img_fusion.cols, img_fusion.rows)));
         redondance.copyTo(redondance_next(Rect(-taille.x, -taille.y, redondance.cols, redondance.rows)));
-        position -= taille.tl();
-        last_position -= taille.tl();
+        position.x -= taille.tl().x;
+        position.y -= taille.tl().y;
+        last_position.x -= taille.tl().x;
+        last_position.y -= taille.tl().y;
         img_fusion = img_fusion_next;
         redondance = redondance_next;
         _img_fusion.assign(img_fusion_next);

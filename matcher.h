@@ -28,7 +28,7 @@ protected:
     void doBlend(cv::InputOutputArray img_fusion, cv::InputArray gradient, cv::InputArray img);
 
     cv::Mat last_img, img, last_img_fusion, redondance;
-    cv::Point position, last_position;
+    cv::Point2f position, last_position;
     Matching_Mode mode;
     
     cv::Mat gradient;
