@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Matching/ECC.o \
 	${OBJECTDIR}/Matching/EstimateRigidT.o \
 	${OBJECTDIR}/Matching/TemplateMatching.o \
 	${OBJECTDIR}/correction.o \
@@ -66,6 +67,11 @@ LDLIBSOPTIONS=-Llib -lm -lopencv_calib3d300.dll -lopencv_contrib300.dll -lopencv
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/photonique2.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/photonique2 ${OBJECTFILES} ${LDLIBSOPTIONS} -fopenmp -march=native
+
+${OBJECTDIR}/Matching/ECC.o: Matching/ECC.cpp 
+	${MKDIR} -p ${OBJECTDIR}/Matching
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Matching/ECC.o Matching/ECC.cpp
 
 ${OBJECTDIR}/Matching/EstimateRigidT.o: Matching/EstimateRigidT.cpp 
 	${MKDIR} -p ${OBJECTDIR}/Matching

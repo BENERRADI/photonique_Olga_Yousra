@@ -6,6 +6,7 @@
 #include "correction.h"
 #include "Matching/TemplateMatching.h"
 #include "Matching/EstimateRigidT.h"
+#include "Matching/ECC.h"
 #include <timer.h>
 
 using namespace std;
@@ -77,7 +78,7 @@ int main(int argc, char** argv) {
     }
 
     if (argc < 3) {
-        imwrite("out.bmp", img_fusion);
+        imwrite("out.png", img_fusion);
     } else {
         imwrite(string(argv[2]), img_fusion); // si un troisième argument est fournit cela l'enregistre, imwrite écrit/enregistre l'image dans le chemin d'argv[2]
     }
