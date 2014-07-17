@@ -80,6 +80,7 @@
             <linkerLibLibItem>opencv_features2d300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_flann300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_highgui300.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_imgcodecs300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_imgproc300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_legacy300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_ml300.dll</linkerLibLibItem>
@@ -87,12 +88,14 @@
             <linkerLibLibItem>opencv_objdetect300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_optim300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_photo300.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_reg300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_shape300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_softcascade300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_stitching300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_superres300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_ts300</linkerLibLibItem>
             <linkerLibLibItem>opencv_video300.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_videoio300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_videostab300.dll</linkerLibLibItem>
           </linkerLibItems>
           <commandLine>-fopenmp -march=native</commandLine>
@@ -178,6 +181,7 @@
             <linkerLibLibItem>opencv_features2d300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_flann300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_highgui300.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_imgcodecs300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_imgproc300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_legacy300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_ml300.dll</linkerLibLibItem>
@@ -185,12 +189,14 @@
             <linkerLibLibItem>opencv_objdetect300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_optim300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_photo300.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_reg300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_shape300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_softcascade300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_stitching300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_superres300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_ts300</linkerLibLibItem>
             <linkerLibLibItem>opencv_video300.dll</linkerLibLibItem>
+            <linkerLibLibItem>opencv_videoio300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_videostab300.dll</linkerLibLibItem>
           </linkerLibItems>
           <commandLine>-fopenmp -march=native -O2</commandLine>
