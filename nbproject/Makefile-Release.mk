@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Matching/EstimateRigidT.o \
 	${OBJECTDIR}/Matching/TemplateMatching.o \
 	${OBJECTDIR}/correction.o \
+	${OBJECTDIR}/io.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/matcher.o
 
@@ -65,7 +66,7 @@ LDLIBSOPTIONS=-Llib -lm -lopencv_calib3d300.dll -lopencv_contrib300.dll -lopencv
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/photonique2.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/photonique2 ${OBJECTFILES} ${LDLIBSOPTIONS} -fopenmp -march=native -O3 -flto -s
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/photonique2 ${OBJECTFILES} ${LDLIBSOPTIONS} -fopenmp -march=native -Ofast -flto -s
 
 ${OBJECTDIR}/Matching/ECC.o: Matching/ECC.cpp 
 	${MKDIR} -p ${OBJECTDIR}/Matching
@@ -86,6 +87,11 @@ ${OBJECTDIR}/correction.o: correction.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -s -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/correction.o correction.cpp
+
+${OBJECTDIR}/io.o: io.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -s -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/io.o io.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

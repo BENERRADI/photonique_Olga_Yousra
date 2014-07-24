@@ -1,16 +1,23 @@
 #ifndef MATCHER_H
-#define	MATCHER_H
+    #define	MATCHER_H
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/nonfree/nonfree.hpp>
-#include <vector>
+    #include <opencv2/opencv.hpp>
+    #include <opencv2/nonfree/nonfree.hpp>
+    #include <vector>
 
+    #define GRID_SIZE 4
 //#define SHOW_REDONDANCE
 
 typedef enum Matching_Mode {
     SEQUENCE,
     PANORAMA
 } Matching_Mode;
+
+typedef struct gridVariables {
+    cv::Point min;
+    cv::Point max;
+    cv::Point current;
+} gridVariables;
 
 class matcher {
 public:
@@ -20,6 +27,7 @@ public:
 
     virtual bool match(cv::InputArray img) = 0;
     virtual void blend(cv::InputOutputArray img_fusion) = 0;
+    void build_final(std::string final_filename);
 
     cv::Mat transformation;
 protected:
@@ -32,6 +40,11 @@ protected:
     Matching_Mode mode;
 
     cv::Mat gradient;
+private:
+    gridVariables grid;
+    void merge_redondance(cv::OutputArray merged);
+    void unmerge_redondance(cv::InputArray merged, cv::OutputArray red, cv::OutputArray fusion);
+    void gridUI(cv::InputOutputArray img_fusion);
 };
 
 #endif	/* MATCHER_H */

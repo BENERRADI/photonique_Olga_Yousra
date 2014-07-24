@@ -79,9 +79,9 @@ int main(int argc, char** argv) {
     }
 
     if (argc < 3) {
-        imwrite("out.png", img_fusion);
+        m.build_final("out.png");
     } else {
-        imwrite(string(argv[2]), img_fusion); // si un troisième argument est fournit cela l'enregistre, imwrite écrit/enregistre l'image dans le chemin d'argv[2]
+        m.build_final(string(argv[2]));
     }
 
     return EXIT_SUCCESS;

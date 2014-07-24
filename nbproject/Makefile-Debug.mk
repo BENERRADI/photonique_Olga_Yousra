@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Matching/EstimateRigidT.o \
 	${OBJECTDIR}/Matching/TemplateMatching.o \
 	${OBJECTDIR}/correction.o \
+	${OBJECTDIR}/io.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/matcher.o
 
@@ -86,6 +87,11 @@ ${OBJECTDIR}/correction.o: correction.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/correction.o correction.cpp
+
+${OBJECTDIR}/io.o: io.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/io.o io.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
