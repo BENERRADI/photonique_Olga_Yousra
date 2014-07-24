@@ -30,7 +30,7 @@ protected:
     cv::Mat last_img, img, last_img_fusion, redondance;
     cv::Point2f position, last_position;
     Matching_Mode mode;
-    
+
     cv::Mat gradient;
 };
 

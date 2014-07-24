@@ -1,3 +1,4 @@
+#include "optimization.h"
 #include "correction.h"
 
 using namespace cv;
@@ -19,7 +20,7 @@ void Interpolation(Mat img, Mat& dst) {
 #pragma omp parallel for collapse(2) schedule(dynamic, 50) firstprivate(mask, img)
     for (int y = 0; y < mask.rows; y++) {
         for (int x = 0; x < mask.cols; x++) {
-            if (mask.at<uchar>(y, x) == 255) {
+            if (likely(mask.at<uchar>(y, x) == 255)) {
                 float nb = 0;
                 int sum = 0;
                 if (x > 0)
@@ -57,7 +58,7 @@ void swirl_init(Size img_size, Point center, float radius, float rotation, float
             cartCoordsY(img_size.height, img_size.width, CV_32F);
 
     float r = M_LN2 * radius / 5.0;
-    
+
 #pragma omp parallel for collapse(2) firstprivate(r)
     for (int y = 0; y < img_size.height; y++) {
         for (int x = 0; x < img_size.width; x++) {

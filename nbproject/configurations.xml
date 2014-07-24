@@ -10,8 +10,8 @@
         <itemPath>Matching/TemplateMatching.h</itemPath>
       </logicalFolder>
       <itemPath>correction.h</itemPath>
-      <itemPath>exposure.h</itemPath>
       <itemPath>matcher.h</itemPath>
+      <itemPath>optimization.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -26,7 +26,6 @@
         <itemPath>Matching/TemplateMatching.cpp</itemPath>
       </logicalFolder>
       <itemPath>correction.cpp</itemPath>
-      <itemPath>exposure.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>matcher.cpp</itemPath>
     </logicalFolder>
@@ -59,7 +58,7 @@
             <pElem>include</pElem>
             <pElem>.</pElem>
           </incDir>
-          <commandLine>-fopenmp -march=native</commandLine>
+          <commandLine>-march=native</commandLine>
           <warningLevel>2</warningLevel>
         </cTool>
         <ccTool>
@@ -67,7 +66,7 @@
             <pElem>include</pElem>
             <pElem>.</pElem>
           </incDir>
-          <commandLine>-fopenmp -march=native</commandLine>
+          <commandLine>-march=native</commandLine>
           <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
@@ -100,7 +99,7 @@
             <linkerLibLibItem>opencv_videoio300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_videostab300.dll</linkerLibLibItem>
           </linkerLibItems>
-          <commandLine>-fopenmp -march=native</commandLine>
+          <commandLine>-march=native</commandLine>
         </linkerTool>
       </compileType>
       <packaging>
@@ -130,15 +129,13 @@
       </item>
       <item path="correction.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="exposure.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="exposure.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="matcher.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="matcher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="optimization.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -155,7 +152,7 @@
             <pElem>include</pElem>
             <pElem>.</pElem>
           </incDir>
-          <commandLine>-fopenmp -march=native</commandLine>
+          <commandLine>-fopenmp -march=native -Ofast -flto</commandLine>
           <warningLevel>2</warningLevel>
         </cTool>
         <ccTool>
@@ -165,7 +162,7 @@
             <pElem>include</pElem>
             <pElem>.</pElem>
           </incDir>
-          <commandLine>-fopenmp -march=native -O2</commandLine>
+          <commandLine>-fopenmp -march=native -Ofast -flto</commandLine>
           <warningLevel>2</warningLevel>
         </ccTool>
         <fortranCompilerTool>
@@ -205,7 +202,7 @@
             <linkerLibLibItem>opencv_videoio300.dll</linkerLibLibItem>
             <linkerLibLibItem>opencv_videostab300.dll</linkerLibLibItem>
           </linkerLibItems>
-          <commandLine>-fopenmp -march=native -O2</commandLine>
+          <commandLine>-fopenmp -march=native -Ofast -flto</commandLine>
         </linkerTool>
       </compileType>
       <packaging>
@@ -236,15 +233,13 @@
       </item>
       <item path="correction.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="exposure.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="exposure.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="matcher.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="matcher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="optimization.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

@@ -39,17 +39,16 @@ OBJECTFILES= \
 	${OBJECTDIR}/Matching/EstimateRigidT.o \
 	${OBJECTDIR}/Matching/TemplateMatching.o \
 	${OBJECTDIR}/correction.o \
-	${OBJECTDIR}/exposure.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/matcher.o
 
 
 # C Compiler Flags
-CFLAGS=-fopenmp -march=native
+CFLAGS=-fopenmp -march=native -Ofast -flto
 
 # CC Compiler Flags
-CCFLAGS=-fopenmp -march=native -O2
-CXXFLAGS=-fopenmp -march=native -O2
+CCFLAGS=-fopenmp -march=native -Ofast -flto
+CXXFLAGS=-fopenmp -march=native -Ofast -flto
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -66,7 +65,7 @@ LDLIBSOPTIONS=-Llib -lm -lopencv_calib3d300.dll -lopencv_contrib300.dll -lopencv
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/photonique2.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/photonique2 ${OBJECTFILES} ${LDLIBSOPTIONS} -fopenmp -march=native -O2 -s
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/photonique2 ${OBJECTFILES} ${LDLIBSOPTIONS} -fopenmp -march=native -O3 -flto -s
 
 ${OBJECTDIR}/Matching/ECC.o: Matching/ECC.cpp 
 	${MKDIR} -p ${OBJECTDIR}/Matching
@@ -87,11 +86,6 @@ ${OBJECTDIR}/correction.o: correction.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -s -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/correction.o correction.cpp
-
-${OBJECTDIR}/exposure.o: exposure.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -s -Iinclude -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/exposure.o exposure.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

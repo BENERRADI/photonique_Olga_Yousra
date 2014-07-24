@@ -1,3 +1,4 @@
+#include "optimization.h"
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -63,7 +64,7 @@ int main(int argc, char** argv) {
             timer__("Matching")
             matched = m.match(img);
 
-            if (matched)
+            if (likely(matched))
                 timer__("Fusion")
                 m.blend(img_fusion);
 
